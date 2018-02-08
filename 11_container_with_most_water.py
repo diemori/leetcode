@@ -1,48 +1,34 @@
 class Solution:
     def maxArea(self, height):
-        """
-        :type height: List[int]
-        :rtype: int
-        """
-        maxA = 0
+        left = 0
+        right = len(height) - 1
 
-        total_width = len(height)
-        rheight = height[::-1]
+        max_volume = 0
 
         cnt = 0
 
-        h_list = list()
+        while (left < right):
+            hr = height[right]
+            hl = height[left]
 
-        for x1, h1 in enumerate(height):
-            if h1 == 0:
-                continue
+            cnt += 1
 
-            if h_list and h1 <= h_list[-1]:
-                continue
+            if hl > hr:
+                current_volume = (right - left) * hr
 
-            h_list.append(h1)
+                if current_volume > max_volume:
+                    max_volume = current_volume
+                right -= 1
+            else:
+                current_volume = (right - left) * hl
 
-            for x2, h2 in enumerate(rheight):
-                if h2 == 0:
-                    continue
+                if current_volume > max_volume:
+                    max_volume = current_volume
+                left += 1
 
-                x2p = total_width - x2 - 1
+        print(cnt)
 
-                if x2p <= x1:
-                    break
-
-                width = x2p - x1
-                area = min(h1, h2) * width
-                maxA = max(maxA, area)
-
-                # print(h1, h2, x1, x2p, area)
-
-                if h2 >= h1:
-                    break
-
-        print("compared: %d times" % cnt)
-        return int(maxA)
-
+        return max_volume
 
 if __name__ == "__main__":
     s = Solution()
