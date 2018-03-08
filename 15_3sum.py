@@ -1,7 +1,7 @@
 class Solution:
     def threeSum(selfself, nums):
         nums = sorted(nums)
-        
+
         result = list()
         lnum = len(nums) - 1
 
