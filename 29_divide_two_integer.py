@@ -1,37 +1,49 @@
 class Solution:
+    def __init__(self):
+        self.int_max = 2147483647
+        self.int_min = -2147483648
+
     def divide(self, dividend, divisor):
         """
         :type dividend: int
         :type divisor: int
         :rtype: int
         """
-        summed = 0
         result = 0
+        current_bit = 1
 
-        pos = (1 - 2 * (dividend < 0))
-        pos = pos * (1 - 2 * (divisor < 0))
+        p = 1
 
-        abs_d = abs(dividend)
-        abs_r = abs(divisor)
+        if dividend < 0:
+            p = ~p
+            dividend = ~dividend + 1
 
-        if abs_r > abs_d:
-            return 0
+        if divisor < 0:
+            p = ~p
+            divisor = ~divisor + 1
 
-        if abs_r == 1:
-            return min(max(abs_d * pos, -2147483648), 2147483647)
+        d = divisor
 
-        while summed < abs_d:
-            summed += abs_r
-            result += 1
+        while d <= dividend:
+            d = d << 1
+            current_bit = current_bit << 1
 
-        if summed > abs_d:
-            result -= 1
+        while d >= divisor:
+            d = d >> 1
+            current_bit = current_bit >> 1
 
-        return min(max(result * pos, -2147483648), 2147483647)
+            if d <= dividend:
+                dividend -= d
+                result += current_bit
+
+        if p < 0:
+            result = ~result + 1
+
+        return min(max(result, self.int_min), self.int_max)
 
 
 s = Solution()
 
-r = s.divide(1, 1)
+r = s.divide(10, -3)
 
 print(r)
